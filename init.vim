@@ -1,3 +1,7 @@
+" Set language to english
+set langmenu=en_US
+let $LANG = 'en_US'
+
 " Change the mapleader from \ to ,
 let mapleader=","
 
