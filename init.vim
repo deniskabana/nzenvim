@@ -28,10 +28,6 @@ set splitbelow          " Horizontal split below current.
 set splitright          " Vertical split to right of current.
 set pastetoggle=<F2>
 
-"Natural cursor movement behvaior
-"nnoremap j gj
-"nnoremap k gk
-
 " Ability to close buffer without saving it
 set hidden
 
@@ -106,7 +102,7 @@ function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 
-" Plugins
+" Plugins (with vim-plug)
 call plug#begin('~/.vim/plugged')
 
 Plug 'SirVer/ultisnips'
@@ -170,7 +166,7 @@ let g:indent_guides_enable_on_vim_startup = 0
 
 let g:airline#extensions#branch#format = 2
 let g:airline#extensions#hunks#enabled = 1
-" Single-letter mode names
+" Single-letter mode names for AirLine
 let g:airline_mode_map = {
     \ '__' : '-',
     \ 'n'  : 'N',
@@ -208,26 +204,21 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 
-let NERDTreeIgnore = ['\.swp$','\~']
+" Filter out swap and mac index files from NERDTree
+let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store']
 let NERDTreeShowHidden = 1
 
-"Use 256 colors in terminal for css highlighting
-"set t_Co=256 
-
-" Preferred color themes
-"let g:hybrid_reduced_contrast = 1 " Use reduced contrast colors for hybrid colorscheme (not for others)
+" Color scheme settings
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
-"colorscheme babymate256 " Set color scheme
-"set background=dark " Reset background settings to dark
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 "Different cursor shape in insert mode
 if (has("termguicolors"))
   set termguicolors
 endif
 
+" Color scheme
 syntax enable
 colorscheme OceanicNext
 set background=dark
-
 let g:airline_theme='oceanicnext'
 
 let g:airline_powerline_fonts=1 " Use patched font symbols in airline
@@ -262,11 +253,6 @@ nnoremap <silent> p :call ClipboardPaste()<cr>p
 onoremap <silent> y y:call ClipboardYank()<cr>
 onoremap <silent> d d:call ClipboardYank()<cr>
 
-" Settings for standard.js linter
-"let g:syntastic_javascript_checkers = ['standard']
-"autocmd bufwritepost *.js silent !standard-format -w %
-"set autoread
-
 " Custom colors for signify diff checker
 highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
 highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
@@ -275,7 +261,5 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 " Use Control-L to exit insert/visual/replace mode
 imap <C-L> <Esc>
 
-" Don't show OS X index files
-let NERDTreeIgnore = ['.DS_Store']
 " Open NERDTree by default
 autocmd VimEnter * NERDTree
