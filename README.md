@@ -13,11 +13,13 @@ Run `:PlugInstall` command to install all the plugins.
 * Usage of arrow keys, mouse, enter in insert mode etc. is allowed for the ease of use (and easier transitioning from traditional non-modal editors)
 * Neovim starts with the NERDTree plugin opened
 * Every single command I added into the config is with a guiding comment. Read the whole config to get the best experience possible out of my settings.
+* Lints files (if node_modules/.bin/eslint exists) upon save or hitting <f8>
+* Mapped <f10> to open .vimrc
+* Respects .editorconfig
 
 ### Screenshots
 ![neovim-screenshot](screenshot.png?raw=true)
 ![neovim-screenshot2](screenshot2.png?raw=true)
 
 ### More to be added
-* Support for .editorconfig in vim
-* Built-in javascript linting
+* **CURRENTLY NONE**
