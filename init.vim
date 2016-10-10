@@ -281,4 +281,4 @@ let &makeprg='node_modules/.bin/eslint -f compact --quiet %'
 set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
 nnoremap <f8> :make<return>
 " Run automatically when saving a .js file
-autocmd BufWritePost *.js :make
+"autocmd BufWritePost *.js :make
