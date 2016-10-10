@@ -134,6 +134,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
+Plug 'editorconfig/editorconfig-vim'
 
 call plug#end()
 
@@ -207,6 +208,10 @@ nnoremap <Leader>f :CtrlPMRUFiles<CR>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](doc|tmp|node_modules)',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
 
 " Filter out swap and mac index files from NERDTree
 let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store']
@@ -267,3 +272,13 @@ imap <C-L> <Esc>
 
 " Open NERDTree by default
 autocmd VimEnter * NERDTree
+
+" Map <f10> to open vim config
+nnoremap <f10> :e ~/.config/nvim/init.vim<return>
+
+" Vim linting
+let &makeprg='node_modules/.bin/eslint -f compact --quiet %'
+set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
+nnoremap <f8> :make<return>
+" Run automatically when saving a .js file
+autocmd BufWritePost *.js :make
