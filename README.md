@@ -14,6 +14,7 @@ Run `:PlugInstall` command to install all the plugins.
 * Neovim starts with the NERDTree plugin opened
 * Every single command I added into the config is with a guiding comment. Read the whole config to get the best experience possible out of my settings.
 * Lints files (if node_modules/.bin/eslint exists) upon save or hitting `<f8>`
+* Discover file in NERDTree when hitting `<f9>`
 * Mapped `<f10>` to open .vimrc
 * Respects .editorconfig
 

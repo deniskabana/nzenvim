@@ -279,6 +279,9 @@ nnoremap <f10> :e ~/.config/nvim/init.vim<return>
 " Vim linting
 let &makeprg='node_modules/.bin/eslint -f compact --quiet %'
 set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
+" Lint upon hitting <f8>
 nnoremap <f8> :make<return>
+" Find currently opened buffer in NERDTree
+nnoremap <f9> :NERDTreeFind<return>
 " Run automatically when saving a .js file
 "autocmd BufWritePost *.js :make
