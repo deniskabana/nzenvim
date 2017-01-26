@@ -26,10 +26,14 @@ set modeline            " Enable modeline.
 set esckeys             " Cursor keys in insert mode.
 set linespace=0         " Set line-spacing to minimum.
 set nojoinspaces        " Prevents inserting two spaces after punctuation on a join
+set hidden              " Don't close buffers, hide them
+set nobackup            " Don't create backups
+set noswapfile          " No .swp files
 
 " More natural splits
 set splitbelow          " Horizontal split below current.
 set splitright          " Vertical split to right of current.
+" Toggle paste mode to stop indentation
 set pastetoggle=<F2>
 
 " Ability to close buffer without saving it
@@ -52,9 +56,7 @@ set backspace=indent,eol,start
 
 " Tell Vim which characters to show for expanded TABs,
 " trailing whitespace, and end-of-lines. VERY useful!
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-endif
+set listchars=tab:»\ ,trail:~,precedes:<
 set list                " Show problematic characters.
 
 " Don't require .jsx extension to use jsx syntax
@@ -71,6 +73,8 @@ match ExtraWhitespace /\s\+$\|\t/
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
+
+set pastetoggle=<F2>
 
 set hlsearch            " Highlight search results.
 set ignorecase          " Make searching case insensitive
@@ -98,6 +102,10 @@ endfunction
 
 " Show line numbers in NERDTree for faster navigation
 let NERDTreeShowLineNumbers=1
+" Open NERDTree on right
+let g:NERDTreeWinPos = "right"
+" Make NERDTree wider
+let g:NERDTreeWinSize = 40
 
 " Use ; for commands (doesn't need shift pressed)
 nnoremap ; :
@@ -127,7 +135,6 @@ Plug 'mattn/emmet-vim'
 Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'bling/vim-bufferline'
 Plug 'jiangmiao/auto-pairs'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
@@ -135,16 +142,21 @@ Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'matze/vim-move'
+Plug 'JazzCore/ctrlp-cmatcher'
+Plug 'suan/vim-instant-markdown'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'wavded/vim-stylus'
+Plug 'tpope/vim-surround'
+Plug 'ap/vim-buftabline'
 
 call plug#end()
 
 " Settings for .jsx highlighting
 let g:jsx_ext_required = 0
-
-" Settings for UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Minimal config for Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -167,10 +179,16 @@ inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 set isfname-==
 
-let g:indent_guides_enable_on_vim_startup = 0
-
 let g:airline#extensions#branch#format = 2
 let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+
+" Set modified indicator in bufferline
+let g:bufferline_modified = '*'
+let g:bufferline_echo = 0
+
 " Single-letter mode names for AirLine
 let g:airline_mode_map = {
     \ '__' : '-',
@@ -217,36 +235,33 @@ let g:ctrlp_custom_ignore = {
 let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store']
 let NERDTreeShowHidden = 1
 
-" Color scheme settings
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 "Different cursor shape in insert mode
-if (has("termguicolors"))
-  set termguicolors
-endif
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode
 
-" Color scheme
-syntax enable
-colorscheme OceanicNext
-set background=dark
-let g:airline_theme='oceanicnext'
-
-let g:airline_powerline_fonts=1 " Use patched font symbols in airline
-
-" Disable automatic comment continuation
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Set AirLine theme
-let g:airline_theme = "hybridline"
-
-" Disable auto colors for indent guides and custom colors
+" Enable indent lines by default
+let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_auto_colors=0
 
-let g:indent_guides_enable_on_vim_startup=1
-hi IndentGuidesEven guibg=none
-hi IndentGuidesOdd guibg=#1b2b34
+" DEFAULT THEME SETTINGS
+" {
 
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#bufferline#overwrite_variables = 1
+  " Color scheme settings
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
+  colorscheme PaperColor
+  set background=dark
+  let g:airline_theme='base16_eighties'
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+
+  let g:airline_powerline_fonts=1 " Use patched font symbols in airline
+
+  " Disable automatic comment continuation
+  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+  " Set custom colors for indent guides
+  hi IndentGuidesEven guibg=none
+  hi IndentGuidesOdd guibg=#343434
+" }
 
 " Use system clipboard by default
 function! ClipboardYank()
@@ -270,14 +285,15 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 " Use Control-L to exit insert/visual/replace mode
 imap <C-L> <Esc>
 
-" Open NERDTree by default
-autocmd VimEnter * NERDTree
-
 " Map <f10> to open vim config
 nnoremap <f10> :e ~/.config/nvim/init.vim<return>
+" Map <f6> to git browse (address copy)
+nnoremap <f6> :Gbrowse!<return>
+" Map <f7> to git blame
+nnoremap <f7> :Gblame<return>
 
 " Vim linting
-let &makeprg='node_modules/.bin/eslint -f compact --quiet %'
+let &makeprg='node_modules/.bin/eslint -f visualstudio %'
 set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
 " Lint upon hitting <f8>
 nnoremap <f8> :make<return>
@@ -285,3 +301,9 @@ nnoremap <f8> :make<return>
 nnoremap <f9> :NERDTreeFind<return>
 " Run automatically when saving a .js file
 "autocmd BufWritePost *.js :make
+
+" Settings for devicons
+set encoding=utf8
+
+" Update path to enable gf on js imports
+set path+=*
