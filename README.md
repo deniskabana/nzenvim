@@ -13,9 +13,9 @@ __Side note__: Vim looks (in my humble opinion) best with the light Sauce Code P
 ## How to Git with this vim config?
 Just don't use vim for git merging or conflict resolving. It can get pretty messy and I left that idea the first time I had to fix more than 90 consecutive lines of conflicts, with 4 open views of the same file on a Macbook Air screen.
 
-Much more I recommend the usage of Apple's own free-to-use - XCode's `FileMerge`. It can be controlled entirely with keyboard and works perfectly for resolving conflicts. You can combine this with the `git mergetool` command. Works like a charm.
+Much more I recommend the usage of Apple's own free-to-use - XCode's `FileMerge`. It can be controlled entirely with keyboard and works perfectly for resolving conflicts. You can combine this with the `git mergetool` command. Works like a charm. [More on this here.](https://gist.github.com/kylefox/4512777)
 
-Read more about vim-fugitive plugin.
+[Read more about vim-fugitive plugin.](https://github.com/tpope/vim-fugitive)
 
 ## Features & useful notes
 * `<Leader>` is remapped to `,`
