@@ -1,12 +1,21 @@
-# Settings for NEOVIM
+# IDE mode for Neovim
 
-This is my **init.vim** file for neovim on Mac. See [screenshots](#screenshots) for appearance.
+Use this **init.vim** file for neovim (only tested on Mac). See [screenshots](#screenshots) for the appearance. It is meant to help you transition from any conventional IDE to VIM, allowing you the use of cursor keys, mouse, 32-bit colors, fancy-looking plugins (to enhance the visual experience). To get the best experience possible however, use the cursor keys and mouse only when it is absolutely necessary.
+
+**This config is optimized for Javascript development.** But it supports all other languages and once you learn how to use it in general, you can customize it (or fork this repo) however you want. Happy vimming :)
 
 **NOTE:** It requires `vim-plug` and [neovim](https://neovim.io/) with Python 3 in order to run correctly with all the plugins. Best to be used in iTerm 2 with 24-bit color support.
 
-Run `:PlugInstall` command to install all the plugins.
+Run `:PlugInstall` command to install all the plugins in this configuration model.
 
-__Side note__: Vim looks (in my opinion) best with light Sauce Code Pro font patched for both powerline **and** vim-devicons. If you change the font inside your terminal emulator, be sure it supports all these characters.
+__Side note__: Vim looks (in my humble opinion) best with the light Sauce Code Pro font patched for both powerline **and** vim-devicons (instructions to be found in the [vim-devicons repo](https://github.com/ryanoasis/vim-devicons). If you change the font inside your terminal emulator (I recommend iTerm 2/3), be sure it supports all these characters. Otherwise powerline patched visuals or devicons might not work.
+
+## How to Git with this vim config?
+Just don't use vim for git merging or conflict resolving. It can get pretty messy and I left that idea the first time I had to fix more than 90 consecutive lines of conflicts, with 4 open views of the same file on a Macbook Air screen.
+
+Much more I recommend the usage of Apple's own free-to-use - XCode's `FileMerge`. It can be controlled entirely with keyboard and works perfectly for resolving conflicts. You can combine this with the `git mergetool` command. Works like a charm.
+
+Read more about vim-fugitive plugin.
 
 ## Features & useful notes
 * `<Leader>` is remapped to `,`
@@ -23,11 +32,12 @@ __Side note__: Vim looks (in my opinion) best with light Sauce Code Pro font pat
 * Lints files (if node_modules/.bin/eslint exists) upon save or hitting `<f8>`
 * Discover file in NERDTree when hitting `<f9>`
 * Mapped `<f10>` to open .vimrc
-* Respects .editorconfig
-* Disabled .swp files
+* Respects .editorconfig files per-project
+* Disabled .swp files - increased the speed and tidied the mess vim leaves
 
 ### To-do features
 * Multistep revision system (more sophisticated than .swp files)
+* Support of ligatures (once iTerm and neovim both officially support text replacement)
 
 ### Screenshots
 ![neovim-screenshot](screenshot.png?raw=true)
