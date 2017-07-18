@@ -62,7 +62,7 @@ set list                " Show problematic characters.
 " Don't require .jsx extension to use jsx syntax
 let g:jsx_ext_required = 0
 
-" Set json type for dot files
+" Use json type with dot files
 au BufRead,BufNewFile *.babelrc setfiletype json
 au BufRead,BufNewFile *.eslintrc setfiletype json
 au BufRead,BufNewFile *.gitignore setfiletype json
@@ -88,7 +88,7 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
-" Exit NERDTree if it's the only open window
+" Exit vim if NERDTree is it's only open window
 autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 function! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName")
@@ -102,12 +102,13 @@ endfunction
 
 " Show line numbers in NERDTree for faster navigation
 let NERDTreeShowLineNumbers=1
-" Open NERDTree on right
+" Open NERDTree on right to retain document flow
 let g:NERDTreeWinPos = "right"
 " Make NERDTree wider
 let g:NERDTreeWinSize = 40
 
 " Use ; for commands (doesn't need shift pressed)
+" Addictive shortcut!
 nnoremap ; :
 
 function! DoRemote(arg)
@@ -136,7 +137,7 @@ Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
-Plug 'MattesGroeger/vim-bookmarks'
+Plug 'tpope/vim-commentary'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
@@ -152,13 +153,20 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-buftabline'
+Plug 'alvan/vim-closetag'
 
 call plug#end()
 
-" Settings for .jsx highlighting
+" Settings for .jsx highlighting in .js files
 let g:jsx_ext_required = 0
 
-" Minimal config for Deoplete
+" Syntax highlighting for flowtyped javascript
+let g:javascript_plugin_flow = 1
+
+" Filetypes for vim-closetag (html tag enclosing)
+let g:closetag_filenames = "*.html,*.js,*.md"
+
+" Minimal config for Deoplete (I copied this from somewhere)
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 1
 let g:deoplete#enable_smart_case = 1
@@ -185,7 +193,7 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 
-" Set modified indicator in bufferline
+" Set modified file indicator in bufferline
 let g:bufferline_modified = '*'
 let g:bufferline_echo = 0
 
@@ -212,7 +220,12 @@ noremap <leader>bp :bp<CR>          " Previous buffer.
 noremap <leader>bt :b#<CR>          " Toggle to most recently used buffer.
 noremap <leader>bx :Bclose!<CR>     " Close the buffer & discard changes.
 
-" Remap nerdtree to ,kb (based on sublime's CMD+kb)
+" Remap jj to <Esc> in insert mode
+inoremap jj <Esc>
+nnoremap KK o<Esc>
+nnoremap KL O<Esc>
+
+" Remap nerdtree toggle to ,kb (based on sublime's CMD+kb)
 noremap <leader>kb :NERDTreeToggle<CR>
 
 let g:user_emmet_mode='in' " Enable emmet in insert and normal modes
@@ -227,63 +240,58 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](doc|tmp|node_modules)',
+  \ 'dir':  '\v[\/](doc|tmp|node_modules|bower_components|.git|.happypack)',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
 
 " Filter out swap and mac index files from NERDTree
-let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store']
+let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store'] " Delete unnecessary files
 let NERDTreeShowHidden = 1
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode |
 
 " Enable indent lines by default
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_auto_colors=0
+let g:indent_guides_enable_on_vim_startup=1 " Enable indent guides
+let g:indent_guides_auto_colors=0 " Preferably set the colors manually
 
 " DEFAULT THEME SETTINGS
-" {
+" Color scheme settings
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
+colorscheme PaperColor " Other schemes I like to use: apprentice, TomorrowNightEighties
+set background=dark
+let g:airline_theme='base16_eighties' " bubble is good too
+if (has("termguicolors"))
+  set termguicolors
+endif
 
-  " Color scheme settings
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
-  colorscheme PaperColor
-  set background=dark
-  let g:airline_theme='base16_eighties'
-  if (has("termguicolors"))
-    set termguicolors
-  endif
+let g:airline_powerline_fonts=1 " Use patched font symbols in airline, I recommend Sauce Code Pro
 
-  let g:airline_powerline_fonts=1 " Use patched font symbols in airline
+" Disable automatic comment continuation
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-  " Disable automatic comment continuation
-  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" Set custom colors for indent guides
+hi IndentGuidesEven guibg=none
+hi IndentGuidesOdd guibg=#343434
 
-  " Set custom colors for indent guides
-  hi IndentGuidesEven guibg=none
-  hi IndentGuidesOdd guibg=#343434
-" }
+" Set transparent vim background to display your terminal emulator background
+" Comment this line for default theme background
+hi! Normal ctermbg=NONE guibg=NONE
 
-" Use system clipboard by default
+" Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
   call system('pbcopy', @@)
 endfunction
 function! ClipboardPaste()
   let @@ = system('pbpaste')
 endfunction
+" This also allows the ease of use of CMD+C / V
 
+" Remap default copy/paste keys to clipboard functions
 vnoremap <silent> y y:call ClipboardYank()<cr>
 vnoremap <silent> d d:call ClipboardYank()<cr>
 nnoremap <silent> p :call ClipboardPaste()<cr>p
 onoremap <silent> y y:call ClipboardYank()<cr>
 onoremap <silent> d d:call ClipboardYank()<cr>
-
-" Custom colors for signify diff checker
-highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-
-" Use Control-L to exit insert/visual/replace mode
-imap <C-L> <Esc>
 
 " Map <f10> to open vim config
 nnoremap <f10> :e ~/.config/nvim/init.vim<return>
@@ -292,18 +300,42 @@ nnoremap <f6> :Gbrowse!<return>
 " Map <f7> to git blame
 nnoremap <f7> :Gblame<return>
 
-" Vim linting
+" Vim JS linting (does throw an error when it doesn't exist, but I don't care)
 let &makeprg='node_modules/.bin/eslint -f visualstudio %'
 set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
 " Lint upon hitting <f8>
-nnoremap <f8> :make<return>
-" Find currently opened buffer in NERDTree
-nnoremap <f9> :NERDTreeFind<return>
-" Run automatically when saving a .js file
+nnoremap <f8> :make <bar> copen<return>
+" Uncomment the following line to run when saving a .js file
 "autocmd BufWritePost *.js :make
 
-" Settings for devicons
-set encoding=utf8
+" Find currently opened buffer in NERDTree
+nnoremap <f9> :NERDTreeFind<return>
 
-" Update path to enable gf on js imports
+" Update path to enable <gf> on commonjs imports
+" eg. 'files/tex|t' => press <gf> to open file 'files/text.*'
 set path+=*
+
+" Do not run instant-markdown mode by default (opens browser)
+" Use :InstantMarkdownPreview instead
+let g:instant_markdown_autostart = 0
+
+" autoreload vim when $vimrc is updated
+augroup vimrc     " Source vim configuration upon save
+  autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup END
+
+" Disable relative line numbering on inactive panes
+augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set relativenumber
+    autocmd WinLeave * set norelativenumber
+augroup END
+
+" Highlight the current cursor line
+hi CursorLine guibg=#31291c
+" Disable for inactive panes
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
