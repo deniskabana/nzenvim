@@ -1,43 +1,53 @@
-# IDE mode for Neovim
-
-Use this **init.vim** file for neovim (only tested on Mac). See [screenshots](#screenshots) for the appearance. It is meant to help you transition from any conventional IDE to VIM, allowing you the use of cursor keys, mouse, 32-bit colors, fancy-looking plugins (to enhance the visual experience). To get the best experience possible however, use the cursor keys and mouse only when it is absolutely necessary.
-
-**This config is optimized for Javascript development.** But it supports all other languages and once you learn how to use it in general, you can customize it (or fork this repo) however you want. Happy vimming :)
-
-**NOTE:** It requires `vim-plug` and [neovim](https://neovim.io/) with Python 3 in order to run correctly with all the plugins. Best to be used in iTerm 2 with 24-bit color support.
-
-Run `:PlugInstall` command to install all the plugins in this configuration model.
-
-__Side note__: Vim looks (in my humble opinion) best with the light Sauce Code Pro font patched for both powerline **and** vim-devicons (instructions to be found in the [vim-devicons repo](https://github.com/ryanoasis/vim-devicons). If you change the font inside your terminal emulator (I recommend iTerm 2/3), be sure it supports all these characters. Otherwise powerline patched visuals or devicons might not work.
-
-## How to Git with this vim config?
-Just don't use vim for git merging or conflict resolving. It can get pretty messy and I left that idea the first time I had to fix more than 90 consecutive lines of conflicts, with 4 open views of the same file on a Macbook Air screen.
-
-Much more I recommend the usage of Apple's own free-to-use - XCode's `FileMerge`. It can be controlled entirely with keyboard and works perfectly for resolving conflicts. You can combine this with the `git mergetool` command. Works like a charm. [More on this here.](https://gist.github.com/kylefox/4512777)
-
-[Read more about vim-fugitive plugin.](https://github.com/tpope/vim-fugitive)
-
-## Features & useful notes
-* `<Leader>` is remapped to `,`
-* `;` is remapped to act as `:`, saving you the SHIFT keystroke everytime running a command like `:w`
-* Yanking and deleting puts the content into the system clipboard and can be used with CMD+C/CMD+V in insert mode or by pressing `p` in normal mode.
-* Colorful dev icons in NERDTree
-* Usage of arrow keys, enter, delete in insert mode etc. is allowed for the ease of use (and easier transitioning from traditional non-modal editors)
-* Supports Javascript's ES6 import statements - hover a cursor over an imported file and press `gf` to open it
-* Highlights CSS colors
-* Every single command I added into the config is with a guiding comment. Read the whole config to get the best experience possible out of my settings.
-* Uses tabline
-* Hit `<f6>` to copy github address of currently opened file
-* Hit `<f7>` to open Git Blame (from fugitive)
-* Lints files (if node_modules/.bin/eslint exists) upon save or hitting `<f8>`
-* Discover file in NERDTree when hitting `<f9>`
-* Mapped `<f10>` to open .vimrc
-* Respects .editorconfig files per-project
-* Disabled .swp files - increased the speed and tidied the mess vim leaves
-
-### To-do features
-* Multistep revision system (more sophisticated than .swp files)
-* Support of ligatures (once iTerm and neovim both officially support text replacement)
-
-### Screenshots
 ![neovim-screenshot](screenshot.png?raw=true)
+# Neovim for JavaScript
+#### Works with everything too.
+
+This .vimrc was built for personal use with modren Javascript and is therefore not optimized for other heavy usage.
+
+I use vim **full-time**. And to be able to do that, I had to create *the perfect config™*. And it also looks good and modern with this config (see the screenshot for yourself).
+
+This is a config file for [NeoVim](https://neovim.io/). For the best experience, I recommend using it with [iTerm 2+](https://www.iterm2.com/).
+
+**Most notable features** (this should peak your interest):
+* System clipboard using -> also supports CMD + C/V
+* Leader remapped to `,`
+* Allows the use of arrow keys, mouse (if terminal emulator does), etc.
+* No internal syntax checker. They are just annoying.
+* Editorconfig support
+* No swap files (*.swp)!
+* CommonJS modules support
+* CSS color highlights in text
+* Colored file icons in NERDTree
+* Displays trailing characters
+* **AND IT'S STILL BLAZING FAST WITH THESE SETTINGS!**
+Go on, read the [vimrc](https://github.com/leonapoleon/vimrc/blob/master/init.vim) for full features list.
+
+#### List of requirements before using
+* [vim-plug](https://github.com/junegunn/vim-plug)
+* Python 3 installed
+* neovim
+
+#### What I also recommend
+* Any patched font, with devicons *(without patched fonts, disable devicons or patched fonts settings)*
+
+## Who is this config for?
+Everyone. It's **great for beginners** because it allows mouse and arrow keys, more than **great for pro users**. It is now an IDE as you know them. I successfully replaced Sublime Text & Atom with Vim more than a year and a half ago. I'd never go back.
+
+Why you ask... Because the speed of vim and working solely inside a terminal drives you towards learning much more about the software you work with. Take that as a professional benefit.
+
+## Getting started
+Author's note: Create an zsh/bash alias - use `vim` instead of `nvim`. Neat.
+
+Before you open vim with my config, be sure to meet requirements and preferably also recommendations. Once you open vim with this config, you're probably going to get a few errors. That's okay, bear with me... Hit `:PlugInstall`, quit and re-open vim and it should look good now.
+
+## Notes and important key shortcuts
+* <kbd>Ctrl</kbd>+<kbd>P</kbd> / <kbd>,</kbd><kbd>o</kbd> => Runs CtrlP fuzzy file finder
+* <kbd>,</kbd><kbd>b</kbd> => Runs the same fuzzy finder for Buffers
+* <kbd>,</kbd><kbd>f</kbd> => Fuzzy finder for recently open files
+* <kbd>j</kbd><kbd>j</kbd> => Exit insert mode
+* <kbd>K</kbd><kbd>K</kbd> => Add a line below the cursor staying in normal mode
+* <kbd>K</kbd><kbd>L</kbd> => Add a line above the cursor staying in normal mode
+* <kbd>Ctrl</kbd>+<kbd>L</kbd> => Disable search highlight (equivalent to `:nohl`)
+* <kbd>,</kbd><kbd>k</kbd><kbd>b</kbd> => Toggle NERDTree
+* <kbd>f10</kbd> => Open vimrc
+...and a LOT of other shortcuts are waiting for you in [vimrc](https://github.com/leonapoleon/vimrc/blob/master/init.vim)!

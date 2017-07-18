@@ -243,6 +243,19 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](doc|tmp|node_modules|bower_components|.git|.happypack)',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
+" Clear CtrlP cache for the current project on vim start
+function! SetupCtrlP()
+  if exists("g:loaded_ctrlp") && g:loaded_ctrlp
+    augroup CtrlPExtension
+      autocmd!
+      autocmd FocusGained  * CtrlPClearCache
+      autocmd BufWritePost * CtrlPClearCache
+    augroup END
+  endif
+endfunction
+if has("autocmd")
+  autocmd VimEnter * :call SetupCtrlP()
+endif
 
 " Filter out swap and mac index files from NERDTree
 let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store'] " Delete unnecessary files
@@ -295,6 +308,8 @@ onoremap <silent> d d:call ClipboardYank()<cr>
 
 " Map <f10> to open vim config
 nnoremap <f10> :e ~/.config/nvim/init.vim<return>
+" Map <f4> to git status
+nnoremap <f4> :Gstatus<return>
 " Map <f6> to git browse (address copy)
 nnoremap <f6> :Gbrowse!<return>
 " Map <f7> to git blame
