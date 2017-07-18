@@ -50,4 +50,7 @@ Before you open vim with my config, be sure to meet requirements and preferably 
 * <kbd>Ctrl</kbd>+<kbd>L</kbd> => Disable search highlight (equivalent to `:nohl`)
 * <kbd>,</kbd><kbd>k</kbd><kbd>b</kbd> => Toggle NERDTree
 * <kbd>f10</kbd> => Open vimrc
+* <kbd>,</kbd><kbd>c</kbd><kbd>space</kbd> => Toggle comment current line
+* <kbd>Ctrl</kbd><kbd>y</kbd><kbd>space</kbd> => Emmet expand in insert mode
+
 ...and a LOT of other shortcuts are waiting for you in [vimrc](https://github.com/leonapoleon/vimrc/blob/master/init.vim)!
