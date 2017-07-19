@@ -33,12 +33,16 @@ Go on, read the [vimrc](https://github.com/leonapoleon/vimrc/blob/master/init.vi
 ## Who is this config for?
 Everyone. It's **great for beginners** because it allows mouse and arrow keys, more than **great for pro users**. It is now an IDE as you know them. I successfully replaced Sublime Text & Atom with Vim more than a year and a half ago. I'd never go back.
 
+If you've never used vim, try the `vimtutor` first, vim without plugins second and just then come back to this repo.
+
 Why you ask... Because the speed of vim and working solely inside a terminal drives you towards learning much more about the software you work with. Take that as a professional benefit.
 
 ## Getting started
 Author's note: Create an zsh/bash alias - use `vim` instead of `nvim`. Neat.
 
 Before you open vim with my config, be sure to meet requirements and preferably also recommendations. Once you open vim with this config, you're probably going to get a few errors. That's okay, bear with me... Hit `:PlugInstall`, quit and re-open vim and it should look good now.
+
+To fully utilize it's power check the readme for every plugin installed. Well worth it.
 
 ## Notes and important key shortcuts
 * <kbd>Ctrl</kbd>+<kbd>P</kbd> / <kbd>,</kbd><kbd>o</kbd> => Runs CtrlP fuzzy file finder
