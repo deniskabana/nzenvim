@@ -59,9 +59,6 @@ set backspace=indent,eol,start
 set listchars=tab:»\ ,trail:~,precedes:<
 set list                " Show problematic characters.
 
-" Don't require .jsx extension to use jsx syntax
-let g:jsx_ext_required = 0
-
 " Use json type with dot files
 au BufRead,BufNewFile *.babelrc setfiletype json
 au BufRead,BufNewFile *.eslintrc setfiletype json
@@ -286,10 +283,6 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 hi IndentGuidesEven guibg=none
 hi IndentGuidesOdd guibg=#343434
 
-" Set transparent vim background to display your terminal emulator background
-" Comment this line for default theme background
-hi! Normal ctermbg=NONE guibg=NONE
-
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
   call system('pbcopy', @@)
@@ -339,18 +332,6 @@ augroup vimrc     " Source vim configuration upon save
   autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 augroup END
 
-" Disable relative line numbering on inactive panes
-augroup BgHighlight
-    autocmd!
-    autocmd WinEnter * set relativenumber
-    autocmd WinLeave * set norelativenumber
-augroup END
-
 " Highlight the current cursor line
 hi CursorLine guibg=#31291c
-" Disable for inactive panes
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
+set cursorline
