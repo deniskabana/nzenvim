@@ -134,7 +134,6 @@ Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-commentary'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
@@ -157,9 +156,6 @@ call plug#end()
 " Settings for .jsx highlighting in .js files
 let g:jsx_ext_required = 0
 
-" Syntax highlighting for flowtyped javascript
-let g:javascript_plugin_flow = 1
-
 " Filetypes for vim-closetag (html tag enclosing)
 let g:closetag_filenames = "*.html,*.js,*.md"
 
@@ -176,7 +172,7 @@ let g:deoplete#omni#input_patterns.java = [
             \'[^. \t0-9]\::\w*',
             \]
 let g:deoplete#omni#input_patterns.jsp = ['[^. \t0-9]\.\w*']
-let g:deoplete#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"let g:deoplete#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['javacomplete2']
 call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
@@ -237,7 +233,7 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](doc|tmp|node_modules|bower_components|.git|.happypack)',
+  \ 'dir':  '\v[\/](doc|tmp|node_modules|yarn-offline-mirror|bower_components|.git|.happypack)',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
 " Clear CtrlP cache for the current project on vim start
