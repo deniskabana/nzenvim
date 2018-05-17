@@ -23,7 +23,6 @@ set title               " Change terminal title
 
 set noerrorbells        " No beeps.
 set modeline            " Enable modeline.
-set esckeys             " Cursor keys in insert mode.
 set linespace=0         " Set line-spacing to minimum.
 set nojoinspaces        " Prevents inserting two spaces after punctuation on a join
 set hidden              " Don't close buffers, hide them
@@ -134,7 +133,7 @@ Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
@@ -150,6 +149,7 @@ Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-buftabline'
 Plug 'alvan/vim-closetag'
+Plug 'styled-components/vim-styled-components'
 
 call plug#end()
 
@@ -281,10 +281,10 @@ hi IndentGuidesOdd guibg=#343434
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
-  call system('pbcopy', @@)
+  call system('xsel --clipboard --input', @@)
 endfunction
 function! ClipboardPaste()
-  let @@ = system('pbpaste')
+  let @@ = system('xsel --clipboard --output')
 endfunction
 " This also allows the ease of use of CMD+C / V
 
