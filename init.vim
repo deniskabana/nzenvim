@@ -150,6 +150,7 @@ Plug 'tpope/vim-surround'
 Plug 'ap/vim-buftabline'
 Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components'
+Plug 'andreshazard/vim-freemarker'
 
 call plug#end()
 
@@ -172,10 +173,9 @@ let g:deoplete#omni#input_patterns.java = [
             \'[^. \t0-9]\::\w*',
             \]
 let g:deoplete#omni#input_patterns.jsp = ['[^. \t0-9]\.\w*']
-"let g:deoplete#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['javacomplete2']
-call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 set isfname-==
