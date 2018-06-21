@@ -2,43 +2,51 @@
 set langmenu=en_US
 let $LANG = 'en_US'
 
-" Change the mapleader from \ to ,
+" Change leader key from \ to ,
 let mapleader=","
 
-set showcmd             " Show (partial) command in status line.
-set showmatch           " Show matching brackets.
-set showmode            " Show current mode.
-set ruler               " Show the line and column numbers of the cursor.
-set number              " Show the line numbers on the left side.
-set relativenumber      " Show relative line numbering
+set showcmd                " Show (partial) command in status line
+set showmatch              " Show matching brackets
+set showmode               " Show current mode
+set number                 " Show the line numbers on the left side
+set relativenumber         " Show relative line numbering
+set hidden                 " Ability to close buffer without saving it
 
-set formatoptions+=o    " Continue comment marker in new lines.
-set textwidth=0         " Hard-wrap long lines as you type them.
-set expandtab           " Insert spaces when TAB is pressed.
-set tabstop=2           " Render TABs using this many spaces.
-set shiftwidth=2        " Indentation amount for < and > commands.
-set history=1000        " Remember 1000 steps back
-set undolevels=1000     " Undo a thousand times
-set title               " Change terminal title
+set textwidth=0            " Don't wrap lines when reformatting
+set expandtab              " Insert spaces when TAB is pressed
+set tabstop=2              " Render TABs using this many spaces
+set shiftwidth=2           " Indentation amount for < and > commands
+set history=1000           " Remember 1000 steps back
+set undolevels=1000        " Undo a thousand times
+set title                  " Change terminal title
 
-set noerrorbells        " No beeps.
-set modeline            " Enable modeline.
-set linespace=0         " Set line-spacing to minimum.
-set nojoinspaces        " Prevents inserting two spaces after punctuation on a join
-set hidden              " Don't close buffers, hide them
-set nobackup            " Don't create backups
-set noswapfile          " No .swp files
+set noerrorbells           " No beeps when reaching end of file
+set nomodeline             " Disable modeline - security vulnerability
+set linespace=0            " Set vertical space between lines to a minimum
+set nojoinspaces           " Prevents inserting two spaces after punctuation on a join
+set backupdir=~/.vim/tmp,. " Save backups (swap/ext files) to a dedicated directory (create beforehand)
+set directory=~/.vim/tmp,. " Save backups (swap/ext files) to a dedicated directory (create beforehand)
+set hlsearch               " Highlight search results.
+set ignorecase             " Make searching case insensitive
+set smartcase              " ... unless the query has capital letters.
+set incsearch              " Incremental search.
+set gdefault               " Use 'g' flag by default with :s/foo/bar/.
+set magic                  " Use 'magic' patterns (extended regular expressions).
+
 
 " More natural splits
-set splitbelow          " Horizontal split below current.
-set splitright          " Vertical split to right of current.
-" Toggle paste mode to stop indentation
-set pastetoggle=<F2>
+set splitbelow             " Horizontal split below current
+set splitright             " Vertical split to right of current
+set pastetoggle=<F2>       " Toggle paste mode to stop indentation
 
-" Ability to close buffer without saving it
-set hidden
+" Absolute line numbers in inactive splits, hybrid in splits
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
 
-filetype plugin indent on
+filetype plugin indent on  " Handle correct filetype selection, specific plugins and indentation detection
 
 " More user-friendly scrolling
 if !&scrolloff
@@ -53,37 +61,28 @@ set nostartofline       " Do not jump to first character with page commands.
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" Tell Vim which characters to show for expanded TABs,
-" trailing whitespace, and end-of-lines. VERY useful!
+" Tell Vim which characters to show for expanded TABs, trailing whitespace, and end-of-lines. VERY useful!
 set listchars=tab:»\ ,trail:~,precedes:<
-set list                " Show problematic characters.
-
-" Use json type with dot files
-au BufRead,BufNewFile *.babelrc setfiletype json
-au BufRead,BufNewFile *.eslintrc setfiletype json
-au BufRead,BufNewFile *.gitignore setfiletype json
-
+" Show problematic characters.
+set list
 " Highlight all tabs and trailing whitespace characters.
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$\|\t/
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
-set pastetoggle=<F2>
-
-set hlsearch            " Highlight search results.
-set ignorecase          " Make searching case insensitive
-set smartcase           " ... unless the query has capital letters.
-set incsearch           " Incremental search.
-set gdefault            " Use 'g' flag by default with :s/foo/bar/.
-set magic               " Use 'magic' patterns (extended regular expressions).
+" Use json type with common dot files
+au BufRead,BufNewFile *.babelrc setfiletype json
+au BufRead,BufNewFile *.eslintrc setfiletype json
+au BufRead,BufNewFile *.gitignore setfiletype json
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
+" NERDTree settings
 " Exit vim if NERDTree is it's only open window
 autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 function! s:CloseIfOnlyNerdTreeLeft()
@@ -95,18 +94,16 @@ function! s:CloseIfOnlyNerdTreeLeft()
     endif
   endif
 endfunction
-
-" Show line numbers in NERDTree for faster navigation
-let NERDTreeShowLineNumbers=1
-" Open NERDTree on right to retain document flow
-let g:NERDTreeWinPos = "right"
-" Make NERDTree wider
-let g:NERDTreeWinSize = 40
+let NERDTreeShowLineNumbers=1 " Show line numbers in NERDTree
+let g:NERDTreeWinPos = "right" " Open NERDTree on the right side
+let g:NERDTreeWinSize = 44 " Make NERDTree wider than default
+au VimEnter *  NERDTree " Open NERDTree when neovim launches
+autocmd VimEnter * wincmd p " Jump to the main window.
 
 " Use ; for commands (doesn't need shift pressed)
-" Addictive shortcut!
 nnoremap ; :
 
+" Always update plugins when neovim starts
 function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
@@ -114,19 +111,15 @@ endfunction
 " Plugins (with vim-plug)
 call plug#begin('~/.vim/plugged')
 
+" Load all plugins
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ap/vim-css-color/'
 Plug 'flazz/vim-colorschemes'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
-Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'
 Plug 'mattn/emmet-vim'
 Plug 'Soares/butane.vim'
@@ -134,20 +127,15 @@ Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'godlygeek/csapprox'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'matze/vim-move'
-Plug 'JazzCore/ctrlp-cmatcher'
 Plug 'suan/vim-instant-markdown'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
-Plug 'ap/vim-buftabline'
 Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components'
 Plug 'andreshazard/vim-freemarker'
@@ -180,31 +168,6 @@ inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 set isfname-==
 
-let g:airline#extensions#branch#format = 2
-let g:airline#extensions#hunks#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
-
-" Set modified file indicator in bufferline
-let g:bufferline_modified = '*'
-let g:bufferline_echo = 0
-
-" Single-letter mode names for AirLine
-let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'V',
-    \ '' : 'V',
-    \ 's'  : 'S',
-    \ 'S'  : 'S',
-    \ '' : 'S',
-    \ }
-
 " Butane
 noremap <leader>bd :Bclose<CR>      " Close the buffer.
 noremap <leader>bl :ls<CR>          " List buffers.
@@ -213,78 +176,50 @@ noremap <leader>bp :bp<CR>          " Previous buffer.
 noremap <leader>bt :b#<CR>          " Toggle to most recently used buffer.
 noremap <leader>bx :Bclose!<CR>     " Close the buffer & discard changes.
 
-" Remap jj to <Esc> in insert mode
-inoremap jj <Esc>
-nnoremap KK o<Esc>
-nnoremap KL O<Esc>
+inoremap jj <Esc>                   " Remap jj to <Esc> in insert mode
+nnoremap KK o<Esc>                  " Insert empty line below cursor
+nnoremap KL O<Esc>                  " Insert empty line above cursor
 
 " Remap nerdtree toggle to ,kb (based on sublime's CMD+kb)
 noremap <leader>kb :NERDTreeToggle<CR>
 
 let g:user_emmet_mode='in' " Enable emmet in insert and normal modes
 
-" Open file menu
-nnoremap <Leader>o :CtrlP<CR>
-" Open buffer menu
-nnoremap <Leader>b :CtrlPBuffer<CR>
-" Open most recently used files
-nnoremap <Leader>f :CtrlPMRUFiles<CR>
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](doc|tmp|node_modules|yarn-offline-mirror|bower_components|.git|.happypack)',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ }
-" Clear CtrlP cache for the current project on vim start
-function! SetupCtrlP()
-  if exists("g:loaded_ctrlp") && g:loaded_ctrlp
-    augroup CtrlPExtension
-      autocmd!
-      autocmd FocusGained  * CtrlPClearCache
-      autocmd BufWritePost * CtrlPClearCache
-    augroup END
-  endif
-endfunction
-if has("autocmd")
-  autocmd VimEnter * :call SetupCtrlP()
-endif
-
 " Filter out swap and mac index files from NERDTree
-let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store'] " Delete unnecessary files
+let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store', '.git'] " Don't show unnecessary files
 let NERDTreeShowHidden = 1
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode |
 
 " Enable indent lines by default
 let g:indent_guides_enable_on_vim_startup=1 " Enable indent guides
-let g:indent_guides_auto_colors=0 " Preferably set the colors manually
+let g:indent_guides_auto_colors=0 " Set the colors manually
 
 " DEFAULT THEME SETTINGS
 " Color scheme settings
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
-colorscheme PaperColor " Other schemes I like to use: apprentice, TomorrowNightEighties
-set background=dark
-let g:airline_theme='base16_eighties' " bubble is good too
 if (has("termguicolors"))
   set termguicolors
 endif
 
-let g:airline_powerline_fonts=1 " Use patched font symbols in airline, I recommend Sauce Code Pro
+" Theme
+syntax enable
+set background=dark
+colorscheme OceanicNext
 
 " Disable automatic comment continuation
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Set custom colors for indent guides
 hi IndentGuidesEven guibg=none
-hi IndentGuidesOdd guibg=#343434
+hi IndentGuidesOdd guibg=#303132
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
-  call system('xsel --clipboard --input', @@)
+  call system('pbcopy', @@)
 endfunction
 function! ClipboardPaste()
-  let @@ = system('xsel --clipboard --output')
+  let @@ = system('pbpaste')
 endfunction
 " This also allows the ease of use of CMD+C / V
 
@@ -299,23 +234,12 @@ onoremap <silent> d d:call ClipboardYank()<cr>
 nnoremap <f10> :e ~/.config/nvim/init.vim<return>
 " Map <f4> to git status
 nnoremap <f4> :Gstatus<return>
-" Map <f6> to git browse (address copy)
-nnoremap <f6> :Gbrowse!<return>
 " Map <f7> to git blame
 nnoremap <f7> :Gblame<return>
-
-" Vim JS linting (does throw an error when it doesn't exist, but I don't care)
-let &makeprg='node_modules/.bin/eslint -f visualstudio %'
-set errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m
-" Lint upon hitting <f8>
-nnoremap <f8> :make <bar> copen<return>
-" Uncomment the following line to run when saving a .js file
-"autocmd BufWritePost *.js :make
-
-" Find currently opened buffer in NERDTree
+" Map <f9> to find current file in NERDTree
 nnoremap <f9> :NERDTreeFind<return>
 
-" Update path to enable <gf> on commonjs imports
+" Update path to enable <gf> on file/module imports
 " eg. 'files/tex|t' => press <gf> to open file 'files/text.*'
 set path+=*
 
@@ -323,7 +247,7 @@ set path+=*
 " Use :InstantMarkdownPreview instead
 let g:instant_markdown_autostart = 0
 
-" autoreload vim when $vimrc is updated
+" Autoreload vim when $vimrc is updated
 augroup vimrc     " Source vim configuration upon save
   autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 augroup END
