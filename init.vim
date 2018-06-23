@@ -215,8 +215,8 @@ colorscheme Tomorrow-Night-Eighties
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Set custom colors for indent guides
-hi IndentGuidesEven guibg=none
-hi IndentGuidesOdd guibg=#303132
+ hi IndentGuidesEven guibg=none
+ hi IndentGuidesOdd guibg=#343949
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
