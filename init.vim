@@ -117,6 +117,7 @@ Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'ap/vim-css-color/'
 Plug 'flazz/vim-colorschemes'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
@@ -139,6 +140,9 @@ Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components'
 Plug 'andreshazard/vim-freemarker'
+
+" Add user plugs
+source conf/user-plugs.vim
 
 call plug#end()
 
@@ -205,7 +209,7 @@ endif
 " Theme
 syntax enable
 set background=dark
-colorscheme OceanicNext
+colorscheme Tomorrow-Night-Eighties
 
 " Disable automatic comment continuation
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -255,3 +259,13 @@ augroup END
 " Highlight the current cursor line
 hi CursorLine guibg=#31291c
 set cursorline
+
+" When FZF launches hide status line
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" Open FZF by pressing <C-p>
+nnoremap <C-p> :FZF<return>
+
+" Load custom user config
+source conf/user.vim
