@@ -252,8 +252,8 @@ set path+=*
 let g:instant_markdown_autostart = 0
 
 " Autoreload vim when $vimrc is updated
-augroup vimrc     " Source vim configuration upon save
-  autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup vimrc " Source vim configuration upon save, redraw screen and refresh devicons
+  autocmd! BufWritePost $MYVIMRC source % | redraw | call webdevicons#refresh()
 augroup END
 
 " Highlight the current cursor line
