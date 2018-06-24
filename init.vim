@@ -7,7 +7,7 @@ let mapleader=","
 
 set showcmd                " Show (partial) command in status line
 set showmatch              " Show matching brackets
-set showmode               " Show current mode
+set noshowmode             " Don't show current mode
 set number                 " Show the line numbers on the left side
 set relativenumber         " Show relative line numbering
 set hidden                 " Ability to close buffer without saving it
@@ -27,12 +27,12 @@ set nojoinspaces           " Prevents inserting two spaces after punctuation on 
 set backupdir=~/.vim/tmp,. " Save backups (swap/ext files) to a dedicated directory (create beforehand)
 set directory=~/.vim/tmp,. " Save backups (swap/ext files) to a dedicated directory (create beforehand)
 set hlsearch               " Highlight search results.
+set noshowmode
 set ignorecase             " Make searching case insensitive
 set smartcase              " ... unless the query has capital letters.
 set incsearch              " Incremental search.
 set gdefault               " Use 'g' flag by default with :s/foo/bar/.
 set magic                  " Use 'magic' patterns (extended regular expressions).
-
 
 " More natural splits
 set splitbelow             " Horizontal split below current
@@ -127,6 +127,7 @@ Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
+Plug 'itchyny/lightline.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
@@ -135,14 +136,17 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'suan/vim-instant-markdown'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'mileszs/ack.vim'
 Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components'
 Plug 'andreshazard/vim-freemarker'
+Plug 'ap/vim-buftabline'
+Plug 'scrooloose/nerdcommenter'
 
 " Add user plugs
-source conf/user-plugs.vim
+source $HOME/.vim/plugins/user-plugs.vim
 
 call plug#end()
 
@@ -160,10 +164,10 @@ let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
 let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
 let g:deoplete#omni#input_patterns.java = [
-            \'[^. \t0-9]\.\w*',
-            \'[^. \t0-9]\->\w*',
-            \'[^. \t0-9]\::\w*',
-            \]
+  \'[^. \t0-9]\.\w*',
+  \'[^. \t0-9]\->\w*',
+  \'[^. \t0-9]\::\w*',
+  \]
 let g:deoplete#omni#input_patterns.jsp = ['[^. \t0-9]\.\w*']
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['javacomplete2']
@@ -216,7 +220,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Set custom colors for indent guides
  hi IndentGuidesEven guibg=none
- hi IndentGuidesOdd guibg=#343949
+ hi IndentGuidesOdd guibg=#393939
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
@@ -253,19 +257,39 @@ let g:instant_markdown_autostart = 0
 
 " Autoreload vim when $vimrc is updated
 augroup vimrc " Source vim configuration upon save, redraw screen and refresh devicons
-  autocmd! BufWritePost $MYVIMRC source % | redraw | call webdevicons#refresh()
+  autocmd! BufWritePost $MYVIMRC source %
 augroup END
 
 " Highlight the current cursor line
 hi CursorLine guibg=#31291c
 set cursorline
 
+" Use ack.vim for search
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+endif
+
+" Lightline theme
+let g:lightline = {
+  \ 'colorscheme': 'seoul256',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'percent' ],
+  \              [ 'fileformat', 'fileencoding', 'filetype', 'charvaluehex' ] ]
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'fugitive#head'
+  \ },
+  \ }
+
 " When FZF launches hide status line
 autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+autocmd  FileType fzf set laststatus=0
+  \| autocmd BufLeave <buffer> set laststatus=2
 " Open FZF by pressing <C-p>
 nnoremap <C-p> :FZF<return>
 
 " Load custom user config
-source conf/user.vim
+source $HOME/.vim/plugins/user.vim
