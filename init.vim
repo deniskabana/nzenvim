@@ -129,8 +129,10 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/lightline.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'othree/yajs.vim'
-Plug 'othree/es.next.syntax.vim'
+Plug 'jacoborus/tender.vim'
+"Plug 'othree/yajs.vim'
+"Plug 'othree/es.next.syntax.vim'
+Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -144,6 +146,9 @@ Plug 'styled-components/vim-styled-components'
 Plug 'andreshazard/vim-freemarker'
 Plug 'ap/vim-buftabline'
 Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-sleuth'
+Plug 'connorholyday/vim-snazzy'
+Plug 'pangloss/vim-javascript'
 
 " Add user plugs
 source $HOME/.vim/plugins/user-plugs.vim
@@ -152,6 +157,8 @@ call plug#end()
 
 " Settings for .jsx highlighting in .js files
 let g:jsx_ext_required = 0
+let g:javascript_plugin_jsdoc = 1
+set conceallevel=1
 
 " Filetypes for vim-closetag (html tag enclosing)
 let g:closetag_filenames = "*.html,*.js,*.md"
@@ -201,26 +208,28 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode |
 
 " Enable indent lines by default
 let g:indent_guides_enable_on_vim_startup=1 " Enable indent guides
-let g:indent_guides_auto_colors=0 " Set the colors manually
+"let g:indent_guides_auto_colors=0 " Set the colors manually
 
 " DEFAULT THEME SETTINGS
 " Color scheme settings
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " Enable 24-bit colors in iTerm2 v2.9+ -> disable for 256 schemes
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 if (has("termguicolors"))
   set termguicolors
 endif
 
 " Theme
 syntax enable
-set background=dark
-colorscheme Tomorrow-Night-Eighties
+colorscheme tender
+"set background=dark
+"colorscheme Tomorrow-Night-Eighties
+"colorscheme snazzy
 
 " Disable automatic comment continuation
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Set custom colors for indent guides
- hi IndentGuidesEven guibg=none
- hi IndentGuidesOdd guibg=#393939
+ "hi IndentGuidesEven guibg=none
+ "hi IndentGuidesOdd guibg=#393939
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
@@ -261,7 +270,7 @@ augroup vimrc " Source vim configuration upon save, redraw screen and refresh de
 augroup END
 
 " Highlight the current cursor line
-hi CursorLine guibg=#31291c
+"hi CursorLine guibg=#31291c
 set cursorline
 
 " Use ack.vim for search
@@ -272,7 +281,7 @@ endif
 
 " Lightline theme
 let g:lightline = {
-  \ 'colorscheme': 'seoul256',
+  \ 'colorscheme': 'tender',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
