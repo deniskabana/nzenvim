@@ -97,8 +97,10 @@ endfunction
 let NERDTreeShowLineNumbers=1 " Show line numbers in NERDTree
 let g:NERDTreeWinPos = "right" " Open NERDTree on the right side
 let g:NERDTreeWinSize = 44 " Make NERDTree wider than default
-au VimEnter *  NERDTree " Open NERDTree when neovim launches
-autocmd VimEnter * wincmd p " Jump to the main window.
+
+" RE-ENABLE WHEN I FIND OUT HOW TO OPEN IT WHEN NO FILE SPECIFIED UPON LAUNCH
+"au VimEnter *  NERDTree " Open NERDTree when neovim launches
+"autocmd VimEnter * wincmd p " Jump to the main window.
 
 " Use ; for commands (doesn't need shift pressed)
 nnoremap ; :
@@ -274,9 +276,9 @@ augroup END
 set cursorline
 
 " Use ack.vim for search
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+  let $FZF_DEFAULT_COMMAND = 'rg --files'
 endif
 
 " Lightline theme
@@ -300,5 +302,14 @@ autocmd  FileType fzf set laststatus=0
 " Open FZF by pressing <C-p>
 nnoremap <C-p> :FZF<return>
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " Load custom user config
 source $HOME/.vim/plugins/user.vim
+
+" Auto-open NERDTree when no file open
+au vimenter * if !argc() | NERDTree | endif
