@@ -98,10 +98,6 @@ let NERDTreeShowLineNumbers=1 " Show line numbers in NERDTree
 let g:NERDTreeWinPos = "right" " Open NERDTree on the right side
 let g:NERDTreeWinSize = 44 " Make NERDTree wider than default
 
-" RE-ENABLE WHEN I FIND OUT HOW TO OPEN IT WHEN NO FILE SPECIFIED UPON LAUNCH
-"au VimEnter *  NERDTree " Open NERDTree when neovim launches
-"autocmd VimEnter * wincmd p " Jump to the main window.
-
 " Use ; for commands (doesn't need shift pressed)
 nnoremap ; :
 
@@ -118,7 +114,6 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'ap/vim-css-color/'
-Plug 'flazz/vim-colorschemes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
@@ -127,7 +122,7 @@ Plug 'mhinz/vim-signify'
 Plug 'mattn/emmet-vim'
 Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/lightline.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -136,7 +131,6 @@ Plug 'jacoborus/tender.vim'
 "Plug 'othree/es.next.syntax.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'suan/vim-instant-markdown'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -144,13 +138,18 @@ Plug 'mileszs/ack.vim'
 Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
-Plug 'styled-components/vim-styled-components'
 Plug 'andreshazard/vim-freemarker'
 Plug 'ap/vim-buftabline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sleuth'
-Plug 'connorholyday/vim-snazzy'
+"Plug 'connorholyday/vim-snazzy'
 Plug 'pangloss/vim-javascript'
+Plug 'joshdick/onedark.vim'
+Plug 'djoshea/vim-autoread'
+Plug 'leafgarland/typescript-vim'
+Plug 'Valloric/MatchTagAlways'
+Plug 'deniskabana/vim-jsx-typescript'
+Plug 'ryanoasis/vim-devicons'
 
 " Add user plugs
 source $HOME/.vim/plugins/user-plugs.vim
@@ -172,12 +171,6 @@ let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
 let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
-let g:deoplete#omni#input_patterns.java = [
-  \'[^. \t0-9]\.\w*',
-  \'[^. \t0-9]\->\w*',
-  \'[^. \t0-9]\::\w*',
-  \]
-let g:deoplete#omni#input_patterns.jsp = ['[^. \t0-9]\.\w*']
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['javacomplete2']
 call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
@@ -208,10 +201,6 @@ let NERDTreeShowHidden = 1
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode |
 
-" Enable indent lines by default
-let g:indent_guides_enable_on_vim_startup=1 " Enable indent guides
-"let g:indent_guides_auto_colors=0 " Set the colors manually
-
 " DEFAULT THEME SETTINGS
 " Color scheme settings
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -219,19 +208,29 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
+
+" dark red
+hi tsxTagName guifg=#E06C75
+
+" orange
+hi tsxCloseString guifg=#F99575
+hi tsxCloseTag guifg=#F99575
+hi tsxAttributeBraces guifg=#F99575
+hi tsxEqual guifg=#F99575
+
+" yellow
+hi tsxAttrib guifg=#F8BD7F cterm=italic
+
+
 " Theme
 syntax enable
-colorscheme tender
-"set background=dark
-"colorscheme Tomorrow-Night-Eighties
-"colorscheme snazzy
+colorscheme onedark
 
 " Disable automatic comment continuation
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" Set custom colors for indent guides
- "hi IndentGuidesEven guibg=none
- "hi IndentGuidesOdd guibg=#393939
+" set filetypes as typescript.tsx
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 " Use system clipboard by default (the best thing by far in this vimrc)
 function! ClipboardYank()
@@ -266,16 +265,10 @@ set path+=*
 " Use :InstantMarkdownPreview instead
 let g:instant_markdown_autostart = 0
 
-" Autoreload vim when $vimrc is updated
-augroup vimrc " Source vim configuration upon save, redraw screen and refresh devicons
-  autocmd! BufWritePost $MYVIMRC source %
-augroup END
-
 " Highlight the current cursor line
-"hi CursorLine guibg=#31291c
 set cursorline
 
-" Use ack.vim for search
+" Use ack.vim for search with ripgrep
 if executable('rg')
   let g:ackprg = 'rg --vimgrep'
   let $FZF_DEFAULT_COMMAND = 'rg --files'
@@ -308,8 +301,23 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Load custom user config
-source $HOME/.vim/plugins/user.vim
 
 " Auto-open NERDTree when no file open
 au vimenter * if !argc() | NERDTree | endif
+
+" MatchTagAlways filetypes
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'javascript' : 1,
+    \ 'javascript.jsx' : 1,
+    \ 'typescript' : 1,
+    \ 'typescript.tsx' : 1,
+    \}
+
+" Identify the syntax highlighting group used at the cursor
+map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" Load custom user config
+source $HOME/.vim/plugins/user.vim
