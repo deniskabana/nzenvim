@@ -127,12 +127,9 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/lightline.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jacoborus/tender.vim'
-"Plug 'othree/yajs.vim'
-"Plug 'othree/es.next.syntax.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'suan/vim-instant-markdown'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'mileszs/ack.vim'
 Plug 'wavded/vim-stylus'
@@ -142,7 +139,6 @@ Plug 'andreshazard/vim-freemarker'
 Plug 'ap/vim-buftabline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sleuth'
-"Plug 'connorholyday/vim-snazzy'
 Plug 'pangloss/vim-javascript'
 Plug 'joshdick/onedark.vim'
 Plug 'djoshea/vim-autoread'
@@ -159,10 +155,9 @@ call plug#end()
 " Settings for .jsx highlighting in .js files
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
-set conceallevel=1
 
 " Filetypes for vim-closetag (html tag enclosing)
-let g:closetag_filenames = "*.html,*.js,*.md"
+let g:closetag_filenames = "*.html,*.js,*.md,*.jsx,*.ts,*.tsx"
 
 " Minimal config for Deoplete (I copied this from somewhere)
 let g:deoplete#enable_at_startup = 1
@@ -208,20 +203,6 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-
-" dark red
-hi tsxTagName guifg=#E06C75
-
-" orange
-hi tsxCloseString guifg=#F99575
-hi tsxCloseTag guifg=#F99575
-hi tsxAttributeBraces guifg=#F99575
-hi tsxEqual guifg=#F99575
-
-" yellow
-hi tsxAttrib guifg=#F8BD7F cterm=italic
-
-
 " Theme
 syntax enable
 colorscheme onedark
@@ -260,10 +241,6 @@ nnoremap <f9> :NERDTreeFind<return>
 " Update path to enable <gf> on file/module imports
 " eg. 'files/tex|t' => press <gf> to open file 'files/text.*'
 set path+=*
-
-" Do not run instant-markdown mode by default (opens browser)
-" Use :InstantMarkdownPreview instead
-let g:instant_markdown_autostart = 0
 
 " Highlight the current cursor line
 set cursorline
