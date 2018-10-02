@@ -175,9 +175,10 @@ set isfname-==
 
 " Butane
 noremap <leader>bd :Bclose<CR>      " Close the buffer.
-noremap <leader>bl :ls<CR>          " List buffers.
-noremap <leader>bn :bn<CR>          " Next buffer.
-noremap <leader>bp :bp<CR>          " Previous buffer.
+noremap <Tab> :bn<CR>               " Next buffer.
+noremap <S-Tab> :bp<CR>             " Previous buffer.
+noremap <leader>bn :bn<CR>          " Next buffer (legacy mapping).
+noremap <leader>bp :bp<CR>          " Previous buffer (legacy mapping).
 noremap <leader>bt :b#<CR>          " Toggle to most recently used buffer.
 noremap <leader>bx :Bclose!<CR>     " Close the buffer & discard changes.
 
@@ -295,6 +296,12 @@ let g:mta_filetypes = {
 map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" TODO: Sort all remaps to their own files and document them
+" Search inside a project (check Ack docs for precise info)
+nnoremap <leader>f :Ack!
+" Toggle highlighting CSS colors
+nnoremap <leader>cs :call css_color#toggle()<cr>
 
 " Load custom user config
 source $HOME/.vim/plugins/user.vim
