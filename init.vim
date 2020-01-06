@@ -84,19 +84,23 @@ endif
 
 " NERDTree settings
 " Exit vim if NERDTree is it's only open window
-autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
-function! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
-      endif
-    endif
-  endif
-endfunction
-let NERDTreeShowLineNumbers=1 " Show line numbers in NERDTree
+"autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+"function! s:CloseIfOnlyNerdTreeLeft()
+  "if exists("t:NERDTreeBufName")
+    "if bufwinnr(t:NERDTreeBufName) != -1
+      "if winnr("$") == 1
+        "q
+      "endif
+    "endif
+  "endif
+"endfunction
+"let NERDTreeShowLineNumbers=1 " Show line numbers in NERDTree
+
+" Highlight filenames in NERDTree
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeWinPos = "right" " Open NERDTree on the right side
-let g:NERDTreeWinSize = 44 " Make NERDTree wider than default
 
 " Use ; for commands (doesn't need shift pressed)
 nnoremap ; :
@@ -122,33 +126,26 @@ Plug 'mhinz/vim-signify'
 Plug 'mattn/emmet-vim'
 Plug 'Soares/butane.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/lightline.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jacoborus/tender.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'mileszs/ack.vim'
 Plug 'wavded/vim-stylus'
 Plug 'tpope/vim-surround'
 Plug 'alvan/vim-closetag'
-Plug 'andreshazard/vim-freemarker'
 Plug 'ap/vim-buftabline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sleuth'
 Plug 'pangloss/vim-javascript'
-Plug 'joshdick/onedark.vim'
 Plug 'djoshea/vim-autoread'
-Plug 'leafgarland/typescript-vim'
 Plug 'Valloric/MatchTagAlways'
-Plug 'deniskabana/vim-jsx-typescript'
-Plug 'ryanoasis/vim-devicons'
-
-" Add user plugs
-source $HOME/.vim/plugins/user-plugs.vim
+Plug 'carlitux/deoplete-ternjs'
+Plug 'lvht/phpcd.vim', { 'for': 'php', 'do': 'composer install' }
+Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -195,18 +192,9 @@ let g:user_emmet_mode='in' " Enable emmet in insert and normal modes
 let NERDTreeIgnore = ['\.swp$','\~', '.DS_Store', '.git'] " Don't show unnecessary files
 let NERDTreeShowHidden = 1
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " Different cursor shape in insert mode |
-
-" DEFAULT THEME SETTINGS
-" Color scheme settings
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-if (has("termguicolors"))
-  set termguicolors
-endif
-
 " Theme
 syntax enable
-colorscheme onedark
+colorscheme tender
 
 " Disable automatic comment continuation
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -229,15 +217,6 @@ vnoremap <silent> d d:call ClipboardYank()<cr>
 nnoremap <silent> p :call ClipboardPaste()<cr>p
 onoremap <silent> y y:call ClipboardYank()<cr>
 onoremap <silent> d d:call ClipboardYank()<cr>
-
-" Map <f10> to open vim config
-nnoremap <f10> :e ~/.config/nvim/init.vim<return>
-" Map <f4> to git status
-nnoremap <f4> :Gstatus<return>
-" Map <f7> to git blame
-nnoremap <f7> :Gblame<return>
-" Map <f9> to find current file in NERDTree
-nnoremap <f9> :NERDTreeFind<return>
 
 " Update path to enable <gf> on file/module imports
 " eg. 'files/tex|t' => press <gf> to open file 'files/text.*'
@@ -273,16 +252,6 @@ autocmd  FileType fzf set laststatus=0
 " Open FZF by pressing <C-p>
 nnoremap <C-p> :FZF<return>
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-
-" Auto-open NERDTree when no file open
-au vimenter * if !argc() | NERDTree | endif
-
 " MatchTagAlways filetypes
 let g:mta_filetypes = {
     \ 'html' : 1,
@@ -297,11 +266,10 @@ map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" TODO: Sort all remaps to their own files and document them
 " Search inside a project (check Ack docs for precise info)
 nnoremap <leader>f :Ack!
 " Toggle highlighting CSS colors
 nnoremap <leader>cs :call css_color#toggle()<cr>
 
-" Load custom user config
-source $HOME/.vim/plugins/user.vim
+" Conceal javascript stuff
+set conceallevel=1
